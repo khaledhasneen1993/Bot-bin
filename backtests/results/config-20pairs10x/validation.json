@@ -1,0 +1,112 @@
+{
+  "status": "passed",
+  "run_utc": "2026-10-26T15:14:15.187654+00:00",
+  "tests": [
+    {
+      "name": "20_unique_usdt_m_pairs",
+      "passed": true,
+      "details": [
+        "BTCUSDT",
+        "ETHUSDT",
+        "SOLUSDT",
+        "XRPUSDT",
+        "BNBUSDT",
+        "NEARUSDT",
+        "HYPEUSDT",
+        "ZECUSDT",
+        "ENAUSDT",
+        "1000PEPEUSDT",
+        "DOGEUSDT",
+        "SUIUSDT",
+        "WLDUSDT",
+        "UNIUSDT",
+        "ADAUSDT",
+        "INJUSDT",
+        "LINKUSDT",
+        "BCHUSDT",
+        "AVAXUSDT",
+        "AAVEUSDT"
+      ]
+    },
+    {
+      "name": "requested_10x",
+      "passed": true,
+      "details": 10
+    },
+    {
+      "name": "requested_10pct_margin",
+      "passed": true,
+      "details": 0.1
+    },
+    {
+      "name": "paper_capital_100",
+      "passed": true,
+      "details": 100.0
+    },
+    {
+      "name": "equity_compounding_100.0",
+      "passed": true,
+      "details": {
+        "equity": 100.0,
+        "notional": 100.0,
+        "margin": 10.0
+      }
+    },
+    {
+      "name": "equity_compounding_120.0",
+      "passed": true,
+      "details": {
+        "equity": 120.0,
+        "notional": 120.0,
+        "margin": 12.0
+      }
+    },
+    {
+      "name": "equity_compounding_80.0",
+      "passed": true,
+      "details": {
+        "equity": 80.0,
+        "notional": 80.0,
+        "margin": 8.0
+      }
+    },
+    {
+      "name": "equity_compounding_150.0",
+      "passed": true,
+      "details": {
+        "equity": 150.0,
+        "notional": 150.0,
+        "margin": 15.0
+      }
+    },
+    {
+      "name": "api_leverage_enforced_10x",
+      "passed": true,
+      "details": [
+        "BTCUSDT",
+        10
+      ]
+    },
+    {
+      "name": "isolated_margin_enforced",
+      "passed": true,
+      "details": [
+        "BTCUSDT",
+        "ISOLATED"
+      ]
+    },
+    {
+      "name": "qty_floors_within_margin_budget",
+      "passed": true,
+      "details": {
+        "quantity": 0.001,
+        "notional": 80.0
+      }
+    },
+    {
+      "name": "below_min_notional_skip",
+      "passed": true,
+      "details": null
+    }
+  ]
+}
