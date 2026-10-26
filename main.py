@@ -192,7 +192,7 @@ def open_paper_trade(signal: str, strategy: str, size_usdt: float, atr: float, s
         # Persist open paper trade state in SQLite database for recovery
         save_trade(trade)
             
-        msg = f"🧪 PAPER OPENED {signal} | {qty:.4f} {sym} @ ${price:.2f} | SL=${sl_price:.2f} TP=${tp_price:.2f}"
+        msg = f"🧪 PAPER OPENED {signal} | notional={size_usdt:.2f} USDT, margin={size_usdt/config.LEVERAGE:.2f} USDT, leverage={config.LEVERAGE}x | {qty:.4f} {sym} @ ${price:.2f} | SL=${sl_price:.2f} TP=${tp_price:.2f}"
         push_log(msg)
         
         # Q51 trade alert call
@@ -653,7 +653,7 @@ async def start_bot_async(mode: str = "test"):
         client = get_client()
         
         if mode == "live":
-            # Enforce isolated margin type and leverage 3x (GAP 3) for all active pairs
+            # Enforce configured isolated margin and leverage for all active pairs
             for symbol in config.ACTIVE_PAIRS:
                 try:
                     enforce_leverage_and_margin(client, symbol)
@@ -695,8 +695,8 @@ async def start_bot_async(mode: str = "test"):
                 state["paper_win_count"] = wins
                 state["paper_loss_count"] = losses
                 state["paper_total_pnl"] = sum(t["pnl"] for t in closed)
-                state["paper_balance"] = 10.0 + state["paper_total_pnl"]
-                state["paper_starting_balance"] = 10.0
+                state["paper_balance"] = config.STARTING_BALANCE + state["paper_total_pnl"]
+                state["paper_starting_balance"] = config.STARTING_BALANCE
                 state["paper_peak_balance"] = get_historical_peak_balance("paper", state["paper_balance"])
                 
                 state["paper_open_trade"] = db_trade
@@ -711,7 +711,7 @@ async def start_bot_async(mode: str = "test"):
                 push_log(f"🔌 RECONCILIATION: Recovered open paper trade from database: {db_trade['direction']} @ ${db_trade['entry_price']:.2f}")
 
         push_log(f"🚀 Trading engine started asynchronously in {mode.upper()} mode.")
-        send_telegram(f"🚀 <b>Trading Bot Initialized</b>\nStatus: RUNNING ({mode.upper()})\nLeverage: 3x Isolated\nReady to scan signals.")
+        send_telegram(f"🚀 <b>Trading Bot Initialized</b>\nStatus: RUNNING ({mode.upper()})\nLeverage: {config.LEVERAGE}x Isolated\nMargin allocation: {config.POSITION_MARGIN_FRACTION:.0%} of current equity\nReady to scan signals.")
 
         # Gather tasks
         await asyncio.gather(
