@@ -61,7 +61,7 @@ def init_exchange_info(client: Client, symbol: str):
 def round_qty(symbol: str, qty: float) -> float:
     step = symbol_rules.get(symbol, {}).get("step_size", 0.001)
     precision = len(str(step).rstrip("0").split(".")[-1]) if "." in str(step) else 0
-    val = round(round(qty / step) * step, precision)
+    val = round(math.floor((qty / step) + 1e-9) * step, precision)  # Never round above the allocated margin budget
     return val
 
 def round_price(symbol: str, price: float) -> float:
@@ -71,12 +71,12 @@ def round_price(symbol: str, price: float) -> float:
     return val
 
 def enforce_leverage_and_margin(client: Client, symbol: str):
-    """Explicitly configures leverage to 3x and Isolated Margin mode on startup/reconnects."""
+    """Configure the selected leverage and isolated margin on startup/reconnects."""
     try:
-        client.futures_change_leverage(symbol=symbol, leverage=3)
-        push_log(f"Leverage configured explicitly to 3x Isolated for {symbol}.")
+        client.futures_change_leverage(symbol=symbol, leverage=config.LEVERAGE)
+        push_log(f"Leverage configured explicitly to {config.LEVERAGE}x Isolated for {symbol}.")
     except Exception as e:
-        push_log(f"CRITICAL: Failed to enforce 3x leverage for {symbol}: {e}. Halting.", "error")
+        push_log(f"CRITICAL: Failed to enforce {config.LEVERAGE}x leverage for {symbol}: {e}. Halting.", "error")
         raise e
 
     try:
@@ -157,8 +157,8 @@ def open_trade_limit(client: Client, signal: str, strategy: str, size_usdt: floa
         
         # Calculate quantity
         qty = round_qty(symbol, size_usdt / current_price)
-        if qty <= 0:
-            push_log("Qty rounded to 0. Skipping trade.", "warning")
+        if qty <= 0 or qty * current_price < 5.0:
+            push_log("Order notional under 5 USDT after step-size rounding. Skipping trade.", "warning")
             return
 
         side = "BUY" if signal == "LONG" else "SELL"
