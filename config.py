@@ -19,15 +19,16 @@ TELEGRAM_BOT_TOKEN  = os.getenv("TELEGRAM_BOT_TOKEN", "")
 TELEGRAM_CHAT_ID    = os.getenv("TELEGRAM_CHAT_ID", "")
 
 # ── Capital Goal ─────────────────────────────────────────────
-STARTING_BALANCE    = float(os.getenv("INITIAL_CAPITAL", "10.0"))
+STARTING_BALANCE    = float(os.getenv("INITIAL_CAPITAL", "100.0"))
 TARGET_BALANCE      = STARTING_BALANCE * 10.0  # Challenge target is always 10x starting capital
 DAYS_TO_TARGET      = 30      # Used only for progress display
 
 # ── Trading Settings ─────────────────────────────────────────
 SYMBOL            = "BTCUSDT"       # Main trading pair
-LEVERAGE          = 20              # Leverage (1–125). FULL leverage = very high risk.
-RISK_PER_TRADE    = 0.95            # Use 95% of available balance per trade (aggressive)
-MAX_OPEN_POSITIONS  = 3               # Maximum simultaneous open positions allowed (3 max for $10 account)
+LEVERAGE          = 10              # Isolated futures leverage; leveraged exposure = allocated margin * LEVERAGE.
+POSITION_MARGIN_FRACTION = 0.10    # Use 10% of CURRENT available equity as isolated margin per position; compounds with equity.
+RISK_PER_TRADE    = POSITION_MARGIN_FRACTION  # Legacy alias; margin allocation is not stop-loss risk.
+MAX_OPEN_POSITIONS  = 1               # Current engine tracks one position across all symbols.
 FEE_RATE            = 0.0008          # Effective round-trip transaction fee percentage (standard 0.08%, or 0.03% if BNB is enabled)
 WEEKLY_LOSS_LIMIT   = 0.20            # 20% weekly drawdown limit
 MILESTONE_CONFIG    = {
@@ -90,6 +91,12 @@ LOOP_INTERVAL     = 10             # Seconds between each strategy scan
 LOG_FILE          = "bot_log.json" # Trade log file
 DASHBOARD_PORT    = 5000           # Dashboard runs at http://localhost:5000
 DB_FILE           = os.path.join("data", "trades.db")
-ACTIVE_PAIRS      = ["BTCUSDT", "ETHUSDT", "SOLUSDT", "XRPUSDT"]
+ACTIVE_PAIRS      = [
+    "BTCUSDT", "ETHUSDT", "SOLUSDT", "XRPUSDT",
+    "BNBUSDT", "NEARUSDT", "HYPEUSDT", "ZECUSDT",
+    "ENAUSDT", "1000PEPEUSDT", "DOGEUSDT", "SUIUSDT",
+    "WLDUSDT", "UNIUSDT", "ADAUSDT", "INJUSDT",
+    "LINKUSDT", "BCHUSDT", "AVAXUSDT", "AAVEUSDT",
+]  # 20 liquid USDT-M crypto perpetual contracts; validated 2026-10-26
 
 
