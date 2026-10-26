@@ -1,0 +1,126 @@
+{
+  "retrieved_from": "Binance USDT-M exchange info",
+  "note": "Snapshot at backtest preparation; exchange trading filters may differ from historical period",
+  "symbols": {
+    "BTCUSDT": {
+      "step_size": 0.001,
+      "min_qty": 0.001,
+      "min_notional": 50,
+      "tick_size": 0.1
+    },
+    "ETHUSDT": {
+      "step_size": 0.001,
+      "min_qty": 0.001,
+      "min_notional": 20,
+      "tick_size": 0.01
+    },
+    "SOLUSDT": {
+      "step_size": 0.01,
+      "min_qty": 0.01,
+      "min_notional": 5,
+      "tick_size": 0.01
+    },
+    "XRPUSDT": {
+      "step_size": 0.1,
+      "min_qty": 0.1,
+      "min_notional": 5,
+      "tick_size": 0.0001
+    },
+    "BNBUSDT": {
+      "step_size": 0.01,
+      "min_qty": 0.01,
+      "min_notional": 5,
+      "tick_size": 0.01
+    },
+    "NEARUSDT": {
+      "step_size": 1,
+      "min_qty": 1,
+      "min_notional": 5,
+      "tick_size": 0.001
+    },
+    "HYPEUSDT": {
+      "step_size": 0.01,
+      "min_qty": 0.01,
+      "min_notional": 5,
+      "tick_size": 0.001
+    },
+    "ZECUSDT": {
+      "step_size": 0.001,
+      "min_qty": 0.001,
+      "min_notional": 5,
+      "tick_size": 0.01
+    },
+    "ENAUSDT": {
+      "step_size": 1,
+      "min_qty": 1,
+      "min_notional": 5,
+      "tick_size": 0.00001
+    },
+    "1000PEPEUSDT": {
+      "step_size": 1,
+      "min_qty": 1,
+      "min_notional": 5,
+      "tick_size": 1e-7
+    },
+    "DOGEUSDT": {
+      "step_size": 1,
+      "min_qty": 1,
+      "min_notional": 5,
+      "tick_size": 0.00001
+    },
+    "SUIUSDT": {
+      "step_size": 0.1,
+      "min_qty": 0.1,
+      "min_notional": 5,
+      "tick_size": 0.0001
+    },
+    "WLDUSDT": {
+      "step_size": 1,
+      "min_qty": 1,
+      "min_notional": 5,
+      "tick_size": 0.0001
+    },
+    "UNIUSDT": {
+      "step_size": 1,
+      "min_qty": 1,
+      "min_notional": 5,
+      "tick_size": 0.001
+    },
+    "ADAUSDT": {
+      "step_size": 1,
+      "min_qty": 1,
+      "min_notional": 5,
+      "tick_size": 0.0001
+    },
+    "INJUSDT": {
+      "step_size": 0.1,
+      "min_qty": 0.1,
+      "min_notional": 5,
+      "tick_size": 0.001
+    },
+    "LINKUSDT": {
+      "step_size": 0.01,
+      "min_qty": 0.01,
+      "min_notional": 20,
+      "tick_size": 0.001
+    },
+    "BCHUSDT": {
+      "step_size": 0.001,
+      "min_qty": 0.001,
+      "min_notional": 20,
+      "tick_size": 0.01
+    },
+    "AVAXUSDT": {
+      "step_size": 1,
+      "min_qty": 1,
+      "min_notional": 5,
+      "tick_size": 0.001
+    },
+    "AAVEUSDT": {
+      "step_size": 0.1,
+      "min_qty": 0.1,
+      "min_notional": 5,
+      "tick_size": 0.01
+    }
+  }
+}
