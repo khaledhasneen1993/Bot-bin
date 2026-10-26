@@ -1,0 +1,58 @@
+name: Bot-bin historical paper test Sep26-Oct25
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/backtest-20260926-20261025.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: historical-paper-replay-20260926-20261025
+  cancel-in-progress: false
+jobs:
+  historic-replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      PYTHONUNBUFFERED: '1'
+      PYTHONPATH: ${{ github.workspace }}
+      BINANCE_API_KEY: ''
+      BINANCE_API_SECRET: ''
+      USE_TESTNET: 'false'
+      INITIAL_CAPITAL: '100'
+      TELEGRAM_BOT_TOKEN: ''
+      TELEGRAM_CHAT_ID: ''
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install same original project requirements
+        run: python -m pip install -r requirements.txt
+      - name: Run independent historical paper simulation on Binance archived data
+        id: historical
+        run: python backtests/replay_20260926_20261025.py
+      - name: Save actual results (or documented failure) to the repository
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p backtests/results/20260926-20261025
+          if [ ! -f backtests/results/20260926-20261025/summary.json ]; then
+            printf '{"status":"failed","error":"Historical script never created a summary; see GitHub Actions run logs"}\n' > backtests/results/20260926-20261025/summary.json
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add backtests/results/20260926-20261025/
+          git commit -m "Save measured historical backtest results (or failure)" || true
+          for attempt in 1 2 3; do
+            git pull --rebase origin main && git push origin HEAD:main && break || sleep 2
+          done
+      - name: Upload evidence bundle
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bot-bin-historical-paper-20260926-20261025
+          path: backtests/results/20260926-20261025/
+          retention-days: 14
+          if-no-files-found: warn
