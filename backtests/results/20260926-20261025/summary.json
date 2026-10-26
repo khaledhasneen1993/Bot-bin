@@ -1,0 +1,974 @@
+{
+  "status": "completed",
+  "start_utc": "2026-09-26T00:00:00+00:00",
+  "end_exclusive_utc": "2026-10-26T00:00:00+00:00",
+  "initial_usdt": 100.0,
+  "symbols": [
+    "BTCUSDT",
+    "ETHUSDT",
+    "SOLUSDT",
+    "XRPUSDT"
+  ],
+  "error": null,
+  "notes": [
+    "Historical replay, not an exact recreation of 10-second live scans or tick-by-tick fills.",
+    "Signals checked after each completed 15m candle; all four original timeframes use only information available at that point.",
+    "Trades enter at next 1-minute open, at documented opening-price execution; execution fees modeled: 0.02% maker entry and 0.04% taker exit.",
+    "Stops and targets tested on each subsequent real 1-minute OHLC candle. If both triggered in the same minute, stop-loss has priority.",
+    "Original paper sizing and fee filters used unchanged. Exchange minimum lot/precision not modeled because original paper mode does not enforce them.",
+    "Historical maintenance alerts and 10-second intra-minute tick sequences are unavailable, so their effects are not measured.",
+    "Risk-circuit pauses approximated using completed-trade equity and original percentage thresholds.",
+    "Real archived funding events show zero absolute rates above 0.15% across all four pairs; original Funding Fade never triggers, so unavailable historical open-interest cannot change any signal."
+  ],
+  "data_evidence": {
+    "source": "Binance Vision official USD-M futures klines",
+    "funding_source": "Binance USDT-M funding history API",
+    "checksums": {
+      "BTCUSDT_funding": {
+        "records": 94,
+        "first": "2026-09-25 00:00:00.002000+00:00",
+        "last": "2026-10-26 00:00:00+00:00",
+        "min_rate": -4.135e-05,
+        "max_rate": 0.0001,
+        "extreme_count": 0
+      },
+      "ETHUSDT_funding": {
+        "records": 94,
+        "first": "2026-09-25 00:00:00.002000+00:00",
+        "last": "2026-10-26 00:00:00+00:00",
+        "min_rate": -0.00011754,
+        "max_rate": 0.0001,
+        "extreme_count": 0
+      },
+      "SOLUSDT_funding": {
+        "records": 94,
+        "first": "2026-09-25 00:00:00.002000+00:00",
+        "last": "2026-10-26 00:00:00+00:00",
+        "min_rate": -0.00013796,
+        "max_rate": 0.0001,
+        "extreme_count": 0
+      },
+      "XRPUSDT_funding": {
+        "records": 94,
+        "first": "2026-09-25 00:00:00.002000+00:00",
+        "last": "2026-10-26 00:00:00+00:00",
+        "min_rate": -0.0001674,
+        "max_rate": 0.0001,
+        "extreme_count": 0
+      },
+      "BTCUSDT": {
+        "full_1m_rows": 79200,
+        "tested_1m_rows": 43200,
+        "first": "2026-09-01 00:00:00+00:00",
+        "last": "2026-10-25 23:59:00+00:00",
+        "sha256_ohlcv": "0ec71ea01864ef0bbb1a05688dc4c53ad487017d667ac487788279394cdb8674"
+      },
+      "ETHUSDT": {
+        "full_1m_rows": 79200,
+        "tested_1m_rows": 43200,
+        "first": "2026-09-01 00:00:00+00:00",
+        "last": "2026-10-25 23:59:00+00:00",
+        "sha256_ohlcv": "87adb708edc52fb69eb56d15cc69894cc8dae97540254fc895ea7f5d6145a3a9"
+      },
+      "SOLUSDT": {
+        "full_1m_rows": 79200,
+        "tested_1m_rows": 43200,
+        "first": "2026-09-01 00:00:00+00:00",
+        "last": "2026-10-25 23:59:00+00:00",
+        "sha256_ohlcv": "1274b77a0c59277eb001577f864447ad9e91dbf1027ff247f1935b682c00fe1c"
+      },
+      "XRPUSDT": {
+        "full_1m_rows": 79200,
+        "tested_1m_rows": 43200,
+        "first": "2026-09-01 00:00:00+00:00",
+        "last": "2026-10-25 23:59:00+00:00",
+        "sha256_ohlcv": "264e173ea7022b0100948f6130bbed33965f32c7f20e2d3a7bd47906bcf240a3"
+      }
+    },
+    "files": [
+      {
+        "symbol": "BTCUSDT",
+        "period": "2026-10-03",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2026-10-03.zip",
+        "rows": 1440,
+        "sha256_zip": "7cc6d272810c07d24c4d2dd35efa53b979198f8bcd918cbb7b5fec3e0cd31be2"
+      },
+      {
+        "symbol": "BTCUSDT",
+        "period": "2026-10-01",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2026-10-01.zip",
+        "rows": 1440,
+        "sha256_zip": "062f32fefdfb1d1cfbb6d58ee04c28dd6c45dbf2b52ed60fa4ad6a27b0b19bc5"
+      },
+      {
+        "symbol": "BTCUSDT",
+        "period": "2026-10-02",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2026-10-02.zip",
+        "rows": 1440,
+        "sha256_zip": "9a831b07b2ce50e54e99490c3549b2e426955bc2608c78c31d3761d989e1cf28"
+      },
+      {
+        "symbol": "BTCUSDT",
+        "period": "2026-10-05",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2026-10-05.zip",
+        "rows": 1440,
+        "sha256_zip": "701e9dfaafc643d6d2c98bf76b5c7e39fc9adcc631928fb96d282bd42bb8648c"
+      },
+      {
+        "symbol": "BTCUSDT",
+        "period": "2026-10-04",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2026-10-04.zip",
+        "rows": 1440,
+        "sha256_zip": "e20f611db97170301b316de8e71a56cd8a3771e3f3c272b0ab2532a99ad1dafd"
+      },
+      {
+        "symbol": "SOLUSDT",
+        "period": "2026-09",
+        "kind": "monthly",
+        "url": "https://data.binance.vision/data/futures/um/monthly/klines/SOLUSDT/1m/SOLUSDT-1m-2026-09.zip",
+        "rows": 43200,
+        "sha256_zip": "58bcf27df2447043d9e955674de7c73bc42b848a7b8beb08d7800c9dd04813d1"
+      },
+      {
+        "symbol": "BTCUSDT",
+        "period": "2026-10-06",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2026-10-06.zip",
+        "rows": 1440,
+        "sha256_zip": "05cd282da17466b5e032c5a3bef179d1816ff2e13fa1ebd98c75e0188a141360"
+      },
+      {
+        "symbol": "BTCUSDT",
+        "period": "2026-10-08",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2026-10-08.zip",
+        "rows": 1440,
+        "sha256_zip": "a06c5e6043fc6fec0bfac62e15953c4f615b2508a83eaf30b11c008034ea4644"
+      },
+      {
+        "symbol": "BTCUSDT",
+        "period": "2026-10-07",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2026-10-07.zip",
+        "rows": 1440,
+        "sha256_zip": "00baed8ea40d8ce1845049e69e1a3cf205de1c29ad1b508bb09b1210efcacbf5"
+      },
+      {
+        "symbol": "BTCUSDT",
+        "period": "2026-09",
+        "kind": "monthly",
+        "url": "https://data.binance.vision/data/futures/um/monthly/klines/BTCUSDT/1m/BTCUSDT-1m-2026-09.zip",
+        "rows": 43200,
+        "sha256_zip": "e1a821b5bf6b48d57da01c3e390b8a467a698155def5c18c2c63c0eb044a3247"
+      },
+      {
+        "symbol": "ETHUSDT",
+        "period": "2026-09",
+        "kind": "monthly",
+        "url": "https://data.binance.vision/data/futures/um/monthly/klines/ETHUSDT/1m/ETHUSDT-1m-2026-09.zip",
+        "rows": 43200,
+        "sha256_zip": "c85c7ec631fa7fe3a90c30e4ef6a76aeac0b88be895872388d87a6a8fd3d2892"
+      },
+      {
+        "symbol": "XRPUSDT",
+        "period": "2026-09",
+        "kind": "monthly",
+        "url": "https://data.binance.vision/data/futures/um/monthly/klines/XRPUSDT/1m/XRPUSDT-1m-2026-09.zip",
+        "rows": 43200,
+        "sha256_zip": "a28a4de41559ead96b00db22ab4fa6aecbffd48331b7e876386b99da04861e48"
+      },
+      {
+        "symbol": "BTCUSDT",
+        "period": "2026-10-10",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2026-10-10.zip",
+        "rows": 1440,
+        "sha256_zip": "7c4054a74e61d797fb461dcac78e78bccacc7be9d39ee2eadf2c8beb81cceda1"
+      },
+      {
+        "symbol": "BTCUSDT",
+        "period": "2026-10-09",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2026-10-09.zip",
+        "rows": 1440,
+        "sha256_zip": "14d1413b133c94b3f7cda4a720e361d6168ddcb444b7fc7dc14fe24a680eaa1c"
+      },
+      {
+        "symbol": "BTCUSDT",
+        "period": "2026-10-12",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2026-10-12.zip",
+        "rows": 1440,
+        "sha256_zip": "8c51a42f3d6e45c1ef98db0ea88860216c8638970f6284f682816f13f448b8e1"
+      },
+      {
+        "symbol": "BTCUSDT",
+        "period": "2026-10-17",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2026-10-17.zip",
+        "rows": 1440,
+        "sha256_zip": "b9d3c1e53d0d506ad2930dbd5f5038111ff93a890dac2d61395622ba9990e0ae"
+      },
+      {
+        "symbol": "BTCUSDT",
+        "period": "2026-10-15",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2026-10-15.zip",
+        "rows": 1440,
+        "sha256_zip": "7633947fd1fe8a29d038f09e873404bdda79bf51cb98202c46897f2d813e0904"
+      },
+      {
+        "symbol": "BTCUSDT",
+        "period": "2026-10-16",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2026-10-16.zip",
+        "rows": 1440,
+        "sha256_zip": "1fbdf8280fb215ee5ae637fff78073ff70b6c68af1d70140ead7e691133a49ff"
+      },
+      {
+        "symbol": "BTCUSDT",
+        "period": "2026-10-13",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2026-10-13.zip",
+        "rows": 1440,
+        "sha256_zip": "baa9ce0d36c139276a84cda4f1326018b07b26203711891370bef5d015edf2c8"
+      },
+      {
+        "symbol": "BTCUSDT",
+        "period": "2026-10-14",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2026-10-14.zip",
+        "rows": 1440,
+        "sha256_zip": "83ab6d57c7d2a7a19fe08c5288fc446015ad1f4c3d019ef310556067e959701a"
+      },
+      {
+        "symbol": "BTCUSDT",
+        "period": "2026-10-11",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2026-10-11.zip",
+        "rows": 1440,
+        "sha256_zip": "86dc31dcb26776cd7319793add5892ef96f0fa4ca408b18245cb4a3f08cc4c72"
+      },
+      {
+        "symbol": "BTCUSDT",
+        "period": "2026-10-22",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2026-10-22.zip",
+        "rows": 1440,
+        "sha256_zip": "e587c35aa142923e66f4b3183d5a0cef01653071c866a277c1da3acc37d28384"
+      },
+      {
+        "symbol": "BTCUSDT",
+        "period": "2026-10-20",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2026-10-20.zip",
+        "rows": 1440,
+        "sha256_zip": "8646ea9d58275dafb15c47bc907defe955ca0664a99291f533ab6bee3a97d941"
+      },
+      {
+        "symbol": "BTCUSDT",
+        "period": "2026-10-19",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2026-10-19.zip",
+        "rows": 1440,
+        "sha256_zip": "df9be77f675d7bfaa06b4f5849a5f858abb23b5ecaf6d900dd7412c712645402"
+      },
+      {
+        "symbol": "BTCUSDT",
+        "period": "2026-10-18",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2026-10-18.zip",
+        "rows": 1440,
+        "sha256_zip": "b2ab88a1e7dde22620a427e6ba745dd98c75ba6448979a7cbe4067df7161d031"
+      },
+      {
+        "symbol": "BTCUSDT",
+        "period": "2026-10-24",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2026-10-24.zip",
+        "rows": 1440,
+        "sha256_zip": "86e05a5ca9c1b87762c9c466e16a4553dd636809b1f85a2fcfc6ec9fbfccd803"
+      },
+      {
+        "symbol": "BTCUSDT",
+        "period": "2026-10-23",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2026-10-23.zip",
+        "rows": 1440,
+        "sha256_zip": "7916a7f9319061639431526ec8dc117f96f9684ce230e3af9ff0ca69913dffc8"
+      },
+      {
+        "symbol": "BTCUSDT",
+        "period": "2026-10-21",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2026-10-21.zip",
+        "rows": 1440,
+        "sha256_zip": "cb628c9dde0fc509b7ef76db29a7570fefe78a1cde1ef43551ece1034566d667"
+      },
+      {
+        "symbol": "BTCUSDT",
+        "period": "2026-10-25",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2026-10-25.zip",
+        "rows": 1440,
+        "sha256_zip": "5efa5baeed33479a943776b2057b2bee59141c5dc23a3a3a3f8086296e7980c5"
+      },
+      {
+        "symbol": "ETHUSDT",
+        "period": "2026-10-01",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/ETHUSDT/1m/ETHUSDT-1m-2026-10-01.zip",
+        "rows": 1440,
+        "sha256_zip": "b57eeee73e6fe4ca6494d5ad80b4a0799617aa17b46e9d1eee138cff3b1ffc56"
+      },
+      {
+        "symbol": "ETHUSDT",
+        "period": "2026-10-02",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/ETHUSDT/1m/ETHUSDT-1m-2026-10-02.zip",
+        "rows": 1440,
+        "sha256_zip": "81c7110796e6ed2a7d0eb0d6a74f92063f9e46a9124b34883822a9630f604b49"
+      },
+      {
+        "symbol": "ETHUSDT",
+        "period": "2026-10-06",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/ETHUSDT/1m/ETHUSDT-1m-2026-10-06.zip",
+        "rows": 1440,
+        "sha256_zip": "716d55dc5d8cac9009ab253b8f93fd16dae4ae974bb83a17ec848853930e8aa6"
+      },
+      {
+        "symbol": "ETHUSDT",
+        "period": "2026-10-04",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/ETHUSDT/1m/ETHUSDT-1m-2026-10-04.zip",
+        "rows": 1440,
+        "sha256_zip": "e883567b49408cb2e5d896c21a812603c0cd047227bed1a00b8510356cfc86e9"
+      },
+      {
+        "symbol": "ETHUSDT",
+        "period": "2026-10-03",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/ETHUSDT/1m/ETHUSDT-1m-2026-10-03.zip",
+        "rows": 1440,
+        "sha256_zip": "4590ad832f9473cb57f6b7ded0dfcaba2e2d95ec3b6273b6aff8288faffbe6e6"
+      },
+      {
+        "symbol": "ETHUSDT",
+        "period": "2026-10-09",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/ETHUSDT/1m/ETHUSDT-1m-2026-10-09.zip",
+        "rows": 1440,
+        "sha256_zip": "2334b5b49831e2782bff14f711605b904d035b584130cbf95f1d6e35b3851da7"
+      },
+      {
+        "symbol": "ETHUSDT",
+        "period": "2026-10-07",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/ETHUSDT/1m/ETHUSDT-1m-2026-10-07.zip",
+        "rows": 1440,
+        "sha256_zip": "6639cc7e846346897d0f658baf5a367d1c54cec5f6e7a895f06150a5535926b5"
+      },
+      {
+        "symbol": "ETHUSDT",
+        "period": "2026-10-08",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/ETHUSDT/1m/ETHUSDT-1m-2026-10-08.zip",
+        "rows": 1440,
+        "sha256_zip": "17f0ba82f4e1f1123865eadf345907ac8ffbf72707e101913116bfd7cabf19be"
+      },
+      {
+        "symbol": "ETHUSDT",
+        "period": "2026-10-11",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/ETHUSDT/1m/ETHUSDT-1m-2026-10-11.zip",
+        "rows": 1440,
+        "sha256_zip": "e2b0435d13f74c70302306b158807937a8f2aff064da9f446e5b5c743aea4972"
+      },
+      {
+        "symbol": "ETHUSDT",
+        "period": "2026-10-10",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/ETHUSDT/1m/ETHUSDT-1m-2026-10-10.zip",
+        "rows": 1440,
+        "sha256_zip": "0a622ee38dfd462419de234840360a677005796e446131a48d9924d6a1e90533"
+      },
+      {
+        "symbol": "ETHUSDT",
+        "period": "2026-10-05",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/ETHUSDT/1m/ETHUSDT-1m-2026-10-05.zip",
+        "rows": 1440,
+        "sha256_zip": "e9c08babb8a1530429435b2aa5f626fb0a3ddd938fa3ff333ec293a26a4cc69b"
+      },
+      {
+        "symbol": "ETHUSDT",
+        "period": "2026-10-12",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/ETHUSDT/1m/ETHUSDT-1m-2026-10-12.zip",
+        "rows": 1440,
+        "sha256_zip": "38b5024a9750fb44986d7d7ddd03fae9e3bce78ed10060e2b8b481609bffdad4"
+      },
+      {
+        "symbol": "ETHUSDT",
+        "period": "2026-10-18",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/ETHUSDT/1m/ETHUSDT-1m-2026-10-18.zip",
+        "rows": 1440,
+        "sha256_zip": "81eb72939fa6716dc23a78cdc0c2470e2b3cdc704c61df66236d2908eda83872"
+      },
+      {
+        "symbol": "ETHUSDT",
+        "period": "2026-10-19",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/ETHUSDT/1m/ETHUSDT-1m-2026-10-19.zip",
+        "rows": 1440,
+        "sha256_zip": "11a2169fcd5b813611c63657dfc26eeb0da96428a57cb3bbf6823302a6bff7fd"
+      },
+      {
+        "symbol": "ETHUSDT",
+        "period": "2026-10-15",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/ETHUSDT/1m/ETHUSDT-1m-2026-10-15.zip",
+        "rows": 1440,
+        "sha256_zip": "d1f1f30b93867d38cd9699571587cb45b8b6ef58f139929b3024a5874e708981"
+      },
+      {
+        "symbol": "ETHUSDT",
+        "period": "2026-10-13",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/ETHUSDT/1m/ETHUSDT-1m-2026-10-13.zip",
+        "rows": 1440,
+        "sha256_zip": "7bc402745aaf33bcf860f7a57d4e786c26be83a537a08f846aede6573ec937fa"
+      },
+      {
+        "symbol": "ETHUSDT",
+        "period": "2026-10-14",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/ETHUSDT/1m/ETHUSDT-1m-2026-10-14.zip",
+        "rows": 1440,
+        "sha256_zip": "fcfe61970d024ab870d8c9f1b58a0cb57925e6ccd9bd84e17fed66d56679100a"
+      },
+      {
+        "symbol": "ETHUSDT",
+        "period": "2026-10-17",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/ETHUSDT/1m/ETHUSDT-1m-2026-10-17.zip",
+        "rows": 1440,
+        "sha256_zip": "749873378886ed70b031d5b17efb436b95c929f00e2be96fa96e005db12f5e17"
+      },
+      {
+        "symbol": "ETHUSDT",
+        "period": "2026-10-16",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/ETHUSDT/1m/ETHUSDT-1m-2026-10-16.zip",
+        "rows": 1440,
+        "sha256_zip": "11ac5a5f49f0f3f0ba8b0591b8ed5de50da60f0afae636f2ca5aa1ca488311ae"
+      },
+      {
+        "symbol": "ETHUSDT",
+        "period": "2026-10-22",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/ETHUSDT/1m/ETHUSDT-1m-2026-10-22.zip",
+        "rows": 1440,
+        "sha256_zip": "cdbdd416a596748216af1196e12ade942830af99c13c4331217d97a4f65a3e2d"
+      },
+      {
+        "symbol": "ETHUSDT",
+        "period": "2026-10-21",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/ETHUSDT/1m/ETHUSDT-1m-2026-10-21.zip",
+        "rows": 1440,
+        "sha256_zip": "972b7b8235d8385bf41b67d3f616b4fbeb2ca97e66c69eef0d11e3583b5360f7"
+      },
+      {
+        "symbol": "ETHUSDT",
+        "period": "2026-10-23",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/ETHUSDT/1m/ETHUSDT-1m-2026-10-23.zip",
+        "rows": 1440,
+        "sha256_zip": "f0e5d9fffae1ce96bc8b846f907da8bdf8a7569540df12960de36627cd75a245"
+      },
+      {
+        "symbol": "ETHUSDT",
+        "period": "2026-10-20",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/ETHUSDT/1m/ETHUSDT-1m-2026-10-20.zip",
+        "rows": 1440,
+        "sha256_zip": "1731f7d8fe5f7973b3fc84d1591b4df42321d005f4e8295a5db33a54e5eb7975"
+      },
+      {
+        "symbol": "ETHUSDT",
+        "period": "2026-10-25",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/ETHUSDT/1m/ETHUSDT-1m-2026-10-25.zip",
+        "rows": 1440,
+        "sha256_zip": "89c2d098eb7a16ff4c82428799a8435233139452f8f6c8de6dc65badb880d217"
+      },
+      {
+        "symbol": "ETHUSDT",
+        "period": "2026-10-24",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/ETHUSDT/1m/ETHUSDT-1m-2026-10-24.zip",
+        "rows": 1440,
+        "sha256_zip": "4beffea9f13eb1a9817d3c3f532877e0a458f4f35a5546c0abbb03cd1f9d6a3e"
+      },
+      {
+        "symbol": "SOLUSDT",
+        "period": "2026-10-02",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2026-10-02.zip",
+        "rows": 1440,
+        "sha256_zip": "e905f821fdce9e1966f1cec82cc6f9fb3487c6c00e567258133c7cf48eba0c81"
+      },
+      {
+        "symbol": "SOLUSDT",
+        "period": "2026-10-05",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2026-10-05.zip",
+        "rows": 1440,
+        "sha256_zip": "59a5e157601e083226671eb16a664fd3bb5059cc0ae000f44a021b415a94e72f"
+      },
+      {
+        "symbol": "SOLUSDT",
+        "period": "2026-10-04",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2026-10-04.zip",
+        "rows": 1440,
+        "sha256_zip": "5ac83174512b42442de0e3c03046bfe3030ff59683c81c0d0b639529fa1bf3a4"
+      },
+      {
+        "symbol": "SOLUSDT",
+        "period": "2026-10-01",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2026-10-01.zip",
+        "rows": 1440,
+        "sha256_zip": "18f2bf952e236141bdc9187e4c07c475634d05f2cd5268a48ee3a4240ff6e1e7"
+      },
+      {
+        "symbol": "SOLUSDT",
+        "period": "2026-10-03",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2026-10-03.zip",
+        "rows": 1440,
+        "sha256_zip": "dc0a1dc1e5e8ed2fc74d92b8c596d2b1175f1bca586ac1773aec6695aa74d7f9"
+      },
+      {
+        "symbol": "SOLUSDT",
+        "period": "2026-10-11",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2026-10-11.zip",
+        "rows": 1440,
+        "sha256_zip": "6d5af206345211fddf4af7ac55d74738c02f18b1f35586d5eea9652d6c157c92"
+      },
+      {
+        "symbol": "SOLUSDT",
+        "period": "2026-10-06",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2026-10-06.zip",
+        "rows": 1440,
+        "sha256_zip": "173ccc68a756caffa503d5bcbfa6959d64e33f07224cb4ec42231700dca78b22"
+      },
+      {
+        "symbol": "SOLUSDT",
+        "period": "2026-10-07",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2026-10-07.zip",
+        "rows": 1440,
+        "sha256_zip": "56967f56743382c46b6c98ac49ebb09f2c31a2dd6680f273e75da3cb9db70b66"
+      },
+      {
+        "symbol": "SOLUSDT",
+        "period": "2026-10-09",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2026-10-09.zip",
+        "rows": 1440,
+        "sha256_zip": "effeb7585e7d28ec7f5fb75ddbe1909fd974ceac937e10cbb8c42af48a27ede1"
+      },
+      {
+        "symbol": "SOLUSDT",
+        "period": "2026-10-10",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2026-10-10.zip",
+        "rows": 1440,
+        "sha256_zip": "011ceb02cb5c7ab94e00cdf2a5fb48bb14233107b1c7942a2c1ee83dc6e272b1"
+      },
+      {
+        "symbol": "SOLUSDT",
+        "period": "2026-10-12",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2026-10-12.zip",
+        "rows": 1440,
+        "sha256_zip": "08b080b2806c84ba12f1077df2bc1abaaaad296d21bc633c74c18e3accc1fda3"
+      },
+      {
+        "symbol": "SOLUSDT",
+        "period": "2026-10-14",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2026-10-14.zip",
+        "rows": 1440,
+        "sha256_zip": "6d0fdcd3db387a0bc4830004951028bc44b010cb97385e38e2793d8b60d92712"
+      },
+      {
+        "symbol": "SOLUSDT",
+        "period": "2026-10-08",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2026-10-08.zip",
+        "rows": 1440,
+        "sha256_zip": "5e7710dc9d7d9d58518d50b1195bf3a09b1917b05d3bb6254c600f90e632494a"
+      },
+      {
+        "symbol": "SOLUSDT",
+        "period": "2026-10-15",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2026-10-15.zip",
+        "rows": 1440,
+        "sha256_zip": "da2ce34d15821bf22359a559903b470451828c42736de1cf125e897ca1275cad"
+      },
+      {
+        "symbol": "SOLUSDT",
+        "period": "2026-10-13",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2026-10-13.zip",
+        "rows": 1440,
+        "sha256_zip": "b2756a63faadf4925880539405445064c0b61fa07f4626a86f0759dac5f9f0fe"
+      },
+      {
+        "symbol": "SOLUSDT",
+        "period": "2026-10-16",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2026-10-16.zip",
+        "rows": 1440,
+        "sha256_zip": "7645557ab3b5b912f66ab78112e426aecf900c99ab98df8cf4f026cc22581f42"
+      },
+      {
+        "symbol": "SOLUSDT",
+        "period": "2026-10-17",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2026-10-17.zip",
+        "rows": 1440,
+        "sha256_zip": "52c119fa1c315462cfe20e6592f37ce5ffbb934b3e6e99453fe63985adee0e89"
+      },
+      {
+        "symbol": "SOLUSDT",
+        "period": "2026-10-18",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2026-10-18.zip",
+        "rows": 1440,
+        "sha256_zip": "03787a48e8578f3ee8fe757909f86ddf47da9310fa92a823239321aa7292c732"
+      },
+      {
+        "symbol": "SOLUSDT",
+        "period": "2026-10-20",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2026-10-20.zip",
+        "rows": 1440,
+        "sha256_zip": "61ac0364d18655fd83db6c3fceb4e97d799eb0cc68c8155cd8d7a9a6d2038536"
+      },
+      {
+        "symbol": "SOLUSDT",
+        "period": "2026-10-19",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2026-10-19.zip",
+        "rows": 1440,
+        "sha256_zip": "8d9aef3257c2c1ed710c27e104075dd45a4c3ecb9acf2e0fafbdec180e891d43"
+      },
+      {
+        "symbol": "SOLUSDT",
+        "period": "2026-10-21",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2026-10-21.zip",
+        "rows": 1440,
+        "sha256_zip": "f06d1362829d24f0af5d39b4a00cba33d797b7f1e85e10f7a07a8ed3933d9462"
+      },
+      {
+        "symbol": "SOLUSDT",
+        "period": "2026-10-22",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2026-10-22.zip",
+        "rows": 1440,
+        "sha256_zip": "e1c96a7ae9b223ff6aeed40b0b013c8996af326faddb529bdda1a4593e750f3e"
+      },
+      {
+        "symbol": "XRPUSDT",
+        "period": "2026-10-01",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2026-10-01.zip",
+        "rows": 1440,
+        "sha256_zip": "365cdc535daca2b996e4c4f798e7251d365ca5bf2701ad449b563a5d0b51fd37"
+      },
+      {
+        "symbol": "SOLUSDT",
+        "period": "2026-10-23",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2026-10-23.zip",
+        "rows": 1440,
+        "sha256_zip": "7d7b812ff41c2993fda3e38415c3b6288d9c841bf7f9c8e77e9bd698c37cd9c7"
+      },
+      {
+        "symbol": "SOLUSDT",
+        "period": "2026-10-24",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2026-10-24.zip",
+        "rows": 1440,
+        "sha256_zip": "a66bb76302f002ad4bca1048a95c48bf57cd505e3f5c1883b8fc8565bc902dc8"
+      },
+      {
+        "symbol": "SOLUSDT",
+        "period": "2026-10-25",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/SOLUSDT/1m/SOLUSDT-1m-2026-10-25.zip",
+        "rows": 1440,
+        "sha256_zip": "5ea0196495046c69b1f17c411f7add9680f6b3ac4536d762a4ce866e32186e48"
+      },
+      {
+        "symbol": "XRPUSDT",
+        "period": "2026-10-02",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2026-10-02.zip",
+        "rows": 1440,
+        "sha256_zip": "7f7fb3601e91c1d8d5b2817a3fd49939cadbce80f23e71ff8c6af3c58e3811f8"
+      },
+      {
+        "symbol": "XRPUSDT",
+        "period": "2026-10-06",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2026-10-06.zip",
+        "rows": 1440,
+        "sha256_zip": "dff61085e9105a9b2977171e64df655f12d18d4f13df44feee1a5ecf75189ca0"
+      },
+      {
+        "symbol": "XRPUSDT",
+        "period": "2026-10-03",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2026-10-03.zip",
+        "rows": 1440,
+        "sha256_zip": "aa780dc0d424c5c4dcaed262e8a2580514fc20ac56464851a3837903601164a0"
+      },
+      {
+        "symbol": "XRPUSDT",
+        "period": "2026-10-04",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2026-10-04.zip",
+        "rows": 1440,
+        "sha256_zip": "b43263881c158fb9054947eff87c8fb94cd9437342012f780290629c37dede52"
+      },
+      {
+        "symbol": "XRPUSDT",
+        "period": "2026-10-05",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2026-10-05.zip",
+        "rows": 1440,
+        "sha256_zip": "9d1e1191e67026a27b59caee52eeeed2803cc29b593a81170782dcd6fb44cb95"
+      },
+      {
+        "symbol": "XRPUSDT",
+        "period": "2026-10-07",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2026-10-07.zip",
+        "rows": 1440,
+        "sha256_zip": "263f503267796ec60893595ba9811f98b60af25bbd3e96eab98ff64f30ea09e3"
+      },
+      {
+        "symbol": "XRPUSDT",
+        "period": "2026-10-08",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2026-10-08.zip",
+        "rows": 1440,
+        "sha256_zip": "d00e947cf1ace52bf2e4bea35acc52d0de75fa6734948edaf132e9f9e0481de8"
+      },
+      {
+        "symbol": "XRPUSDT",
+        "period": "2026-10-10",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2026-10-10.zip",
+        "rows": 1440,
+        "sha256_zip": "371b530eb3f19ef48dfa93c8b9e03725f969f8eeae76b028768dc1d537a4dc73"
+      },
+      {
+        "symbol": "XRPUSDT",
+        "period": "2026-10-12",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2026-10-12.zip",
+        "rows": 1440,
+        "sha256_zip": "c7ee1e2d519eb6d5ac2c8183872c9919107a17c1798225babd5388d1f5b33b22"
+      },
+      {
+        "symbol": "XRPUSDT",
+        "period": "2026-10-09",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2026-10-09.zip",
+        "rows": 1440,
+        "sha256_zip": "5c198cbcf7673fb3320ee59ea808ca18708fcb0f3faccdf956bcc351b33519b9"
+      },
+      {
+        "symbol": "XRPUSDT",
+        "period": "2026-10-11",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2026-10-11.zip",
+        "rows": 1440,
+        "sha256_zip": "36f7bfe3d17d9f4d715d9327e5c528f7edec371c970d7eb8ca66df741ae71416"
+      },
+      {
+        "symbol": "XRPUSDT",
+        "period": "2026-10-14",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2026-10-14.zip",
+        "rows": 1440,
+        "sha256_zip": "78ad6865e21fa6bf5a6ca621e21300009bb14d571629faefbd22d029c39d3f32"
+      },
+      {
+        "symbol": "XRPUSDT",
+        "period": "2026-10-18",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2026-10-18.zip",
+        "rows": 1440,
+        "sha256_zip": "04fcb6bd62dce58fcf01e69c3de6233d8a4f01561eb73e56aa72b09eb48154eb"
+      },
+      {
+        "symbol": "XRPUSDT",
+        "period": "2026-10-13",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2026-10-13.zip",
+        "rows": 1440,
+        "sha256_zip": "a630aa62af508c55e2d06fa2902465c62649d959cf2a83a9439896bc0b954f42"
+      },
+      {
+        "symbol": "XRPUSDT",
+        "period": "2026-10-15",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2026-10-15.zip",
+        "rows": 1440,
+        "sha256_zip": "4d579468ae6112e60b0b90f9bfa157be56a4dd2e0cb18c6d2590c47c2882e65a"
+      },
+      {
+        "symbol": "XRPUSDT",
+        "period": "2026-10-17",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2026-10-17.zip",
+        "rows": 1440,
+        "sha256_zip": "c3183cd0906d68cb7a4378fd15a70ab95919404947527c9691176e18bc514554"
+      },
+      {
+        "symbol": "XRPUSDT",
+        "period": "2026-10-19",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2026-10-19.zip",
+        "rows": 1440,
+        "sha256_zip": "cfd228e35c94dae6ebfbd693006147a99bb558cb27f595ae83d83167a5727761"
+      },
+      {
+        "symbol": "XRPUSDT",
+        "period": "2026-10-20",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2026-10-20.zip",
+        "rows": 1440,
+        "sha256_zip": "d51ba4a87ce3b77d0adee8f21625150be2be184d8c93c18e73d7d1267512d52a"
+      },
+      {
+        "symbol": "XRPUSDT",
+        "period": "2026-10-21",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2026-10-21.zip",
+        "rows": 1440,
+        "sha256_zip": "3018dbf4daf940c995e3e20b958cd8afd87af2286892eefc9872e5bc22949a1b"
+      },
+      {
+        "symbol": "XRPUSDT",
+        "period": "2026-10-22",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2026-10-22.zip",
+        "rows": 1440,
+        "sha256_zip": "96f461923bf570abbfe862b71f125b371d0e530f490ad01b8d89454c65eb0f0c"
+      },
+      {
+        "symbol": "XRPUSDT",
+        "period": "2026-10-16",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2026-10-16.zip",
+        "rows": 1440,
+        "sha256_zip": "a499b15c3867b7c814700d6754aa8912d0ebd9fff94d3fc9e6b97cb2f489694b"
+      },
+      {
+        "symbol": "XRPUSDT",
+        "period": "2026-10-23",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2026-10-23.zip",
+        "rows": 1440,
+        "sha256_zip": "b171bfb0825e7dcee5266461062e40ae6c5566dea3ba78fd79930d236b7d50e5"
+      },
+      {
+        "symbol": "XRPUSDT",
+        "period": "2026-10-24",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2026-10-24.zip",
+        "rows": 1440,
+        "sha256_zip": "b611a9c0513483ed565fdb71e6c64ca1229d42eba3aacbabd5e0610523cdd289"
+      },
+      {
+        "symbol": "XRPUSDT",
+        "period": "2026-10-25",
+        "kind": "daily",
+        "url": "https://data.binance.vision/data/futures/um/daily/klines/XRPUSDT/1m/XRPUSDT-1m-2026-10-25.zip",
+        "rows": 1440,
+        "sha256_zip": "94c1896529c4540230a88c26a8d41adece7aec1695110a5dcd6631d33c41b9c2"
+      }
+    ],
+    "missing": []
+  },
+  "results": {
+    "initial_usdt": 100.0,
+    "realized_final_balance_usdt": 100.142927,
+    "marked_final_equity_usdt": 100.142927,
+    "net_profit_closed_usdt": 0.142927,
+    "return_pct_closed": 0.142927,
+    "total_trades": 5,
+    "wins": 1,
+    "losses": 4,
+    "win_rate_pct": 20.0,
+    "gross_pnl_usdt": 0.202836,
+    "total_fees_usdt": 0.059908,
+    "profit_factor": 1.8297,
+    "max_drawdown_pct": 0.0885,
+    "open_trade_at_end": null,
+    "open_trade_unrealized_pnl_usdt": 0.0,
+    "estimated_exit_fee_usdt": 0.0,
+    "signal_evaluations": 11470,
+    "skips": {
+      "no_two_strategy_confluence_or_trend_conflict": 11393,
+      "already_open": 9,
+      "confluence_score_below_threshold": 72
+    },
+    "entries_by_symbol": {
+      "BTCUSDT": 2,
+      "ETHUSDT": 2,
+      "XRPUSDT": 1
+    },
+    "daily_results": {
+      "2026-09-28": {
+        "trades": 2,
+        "net": -0.08848404364412034
+      },
+      "2026-10-24": {
+        "trades": 2,
+        "net": 0.3031605958775243
+      },
+      "2026-10-25": {
+        "trades": 1,
+        "net": -0.07174917463249122
+      }
+    },
+    "sampling": "15-minute signal evaluations and 1-minute bar OHLC exits",
+    "original_modules_used": [
+      "modules.signals.calculate_signals",
+      "modules.position_sizer.calculate_position_size",
+      "modules.fee_guardian.passes_fee_gate",
+      "modules.regime_detector.detect_market_regime"
+    ]
+  }
+}
