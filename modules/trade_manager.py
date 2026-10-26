@@ -42,14 +42,18 @@ def init_exchange_info(client: Client, symbol: str):
             if s["symbol"] == symbol:
                 step_size = 0.001
                 tick_size = 0.01
+                min_notional = 5.0
                 for f in s["filters"]:
                     if f["filterType"] == "LOT_SIZE":
                         step_size = float(f["stepSize"])
                     elif f["filterType"] == "PRICE_FILTER":
                         tick_size = float(f["tickSize"])
+                    elif f["filterType"] == "MIN_NOTIONAL":
+                        min_notional = float(f.get("notional", f.get("minNotional", 5.0)))
                 symbol_rules[symbol] = {
                     "step_size": step_size,
-                    "tick_size": tick_size
+                    "tick_size": tick_size,
+                    "min_notional": min_notional
                 }
                 push_log(f"Cached constraints for {symbol}: Step={step_size}, Tick={tick_size}")
                 return
@@ -157,8 +161,9 @@ def open_trade_limit(client: Client, signal: str, strategy: str, size_usdt: floa
         
         # Calculate quantity
         qty = round_qty(symbol, size_usdt / current_price)
-        if qty <= 0 or qty * current_price < 5.0:
-            push_log("Order notional under 5 USDT after step-size rounding. Skipping trade.", "warning")
+        exchange_min = symbol_rules.get(symbol, {}).get("min_notional", 5.0)
+        if qty <= 0 or qty * current_price < exchange_min:
+            push_log(f"Order notional under {exchange_min} USDT for {symbol} after step-size rounding. Skipping trade.", "warning")
             return
 
         side = "BUY" if signal == "LONG" else "SELL"
