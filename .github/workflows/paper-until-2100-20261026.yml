@@ -1,0 +1,146 @@
+name: Live-market paper simulation (26 Oct until 21:00 Amman)
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/paper-until-2100-20261026.yml'
+permissions:
+  contents: read
+jobs:
+  paper-live-market:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    env:
+      PYTHONUNBUFFERED: '1'
+      USE_TESTNET: 'false'
+      INITIAL_CAPITAL: '10.0'
+      BINANCE_API_KEY: ''
+      BINANCE_API_SECRET: ''
+      TELEGRAM_BOT_TOKEN: ''
+      TELEGRAM_CHAT_ID: ''
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install unchanged bot dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Run unchanged paper-trading engine against live market until 21:00 Amman
+        shell: bash
+        run: |
+          cat > /tmp/paper_session.py <<'PY'
+          import asyncio
+          import json
+          import os
+          import shutil
+          import sqlite3
+          import traceback
+          from datetime import datetime
+          from pathlib import Path
+          from zoneinfo import ZoneInfo
+
+          TARGET = datetime(2026, 10, 26, 21, 0, 0, tzinfo=ZoneInfo("Asia/Amman"))
+          OUT = Path("paper_session_results")
+          OUT.mkdir(exist_ok=True)
+          from modules.state import state, state_lock
+          from modules.trade_manager import get_client
+          import config
+          import main
+          started = datetime.now(ZoneInfo("Asia/Amman"))
+          failure = None
+
+          # Never send signed requests or live orders. Keys are empty and mode is test.
+          assert not config.API_KEY and not config.API_SECRET
+          assert config.STARTING_BALANCE == 10.0
+          assert started < TARGET, "Requested end time has already passed"
+          main.open_trade_limit = lambda *a, **kw: (_ for _ in ()).throw(RuntimeError("Live order prohibited in paper run"))
+          main.close_position_market = lambda *a, **kw: (_ for _ in ()).throw(RuntimeError("Live market close prohibited in paper run"))
+          main.enforce_leverage_and_margin = lambda *a, **kw: (_ for _ in ()).throw(RuntimeError("Account mutation prohibited"))
+          main.reconcile_positions = lambda *a, **kw: (_ for _ in ()).throw(RuntimeError("Account reconciliation prohibited"))
+
+          def capture():
+              with state_lock:
+                  data = json.loads(json.dumps(state, default=str))
+              data["session_start_amman"] = started.isoformat()
+              data["session_end_amman"] = datetime.now(ZoneInfo("Asia/Amman")).isoformat()
+              data["scheduled_cutoff_amman"] = TARGET.isoformat()
+              data["simulation"] = "paper_only_live_market"
+              data["authorized_real_orders"] = False
+              data["failure"] = failure
+              (OUT / "state.json").write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+              (OUT / "summary.json").write_text(json.dumps({
+                  "start_time": data["session_start_amman"],
+                  "end_time": data["session_end_amman"],
+                  "target_time": data["scheduled_cutoff_amman"],
+                  "status": data.get("status"),
+                  "failure": failure,
+                  "paper_start_balance_usdt": data.get("paper_starting_balance"),
+                  "paper_end_balance_usdt": data.get("paper_balance"),
+                  "paper_closed_count": len(data.get("paper_closed_trades", [])),
+                  "paper_wins": data.get("paper_win_count"),
+                  "paper_losses": data.get("paper_loss_count"),
+                  "paper_net_pnl_usdt": data.get("paper_total_pnl"),
+                  "open_paper_position": data.get("paper_open_trade"),
+                  "active_signal_snapshot": data.get("active_signals"),
+                  "notes": "Open positions are marked to market, not force-closed at deadline; paper-only, no signed API keys."
+              }, ensure_ascii=False, indent=2), encoding="utf-8")
+              for source in (Path("data/trades.db"), Path("logs/bot.log")):
+                  if source.exists():
+                      shutil.copy2(source, OUT / source.name)
+              print("FINAL PAPER SUMMARY:", json.dumps(json.loads((OUT / "summary.json").read_text()), ensure_ascii=False), flush=True)
+
+          async def run():
+              client = get_client()
+              candles = await asyncio.to_thread(client.futures_klines, symbol="BTCUSDT", interval="1m", limit=2)
+              if not isinstance(candles, list) or len(candles) < 2:
+                  raise RuntimeError("Binance futures real-time candles preflight failed")
+              print("PUBLIC BINANCE FUTURES MARKET PREFLIGHT PASSED; paper mode; initial balance $10.", flush=True)
+              with state_lock:
+                  state["trading_mode"] = "test"
+              task = asyncio.create_task(main.start_bot_async("test"))
+              try:
+                  while True:
+                      remain = (TARGET - datetime.now(ZoneInfo("Asia/Amman"))).total_seconds()
+                      if remain <= 0:
+                          print("21:00 Asia/Amman reached; ending paper monitoring.", flush=True)
+                          break
+                      if task.done():
+                          await task
+                          raise RuntimeError("Paper bot terminated before 21:00; status=" + str(state.get("status")))
+                      await asyncio.sleep(min(60.0, remain))
+                      with state_lock:
+                          st = state.get("status")
+                          bal = state.get("paper_balance")
+                          closed = len(state.get("paper_closed_trades", []))
+                          active = state.get("paper_open_trade")
+                          last = state.get("last_scan")
+                      print(f"HEARTBEAT status={st} virtual_balance={bal} closed={closed} position={bool(active)} last_scan={last}", flush=True)
+                      if st == "error":
+                          raise RuntimeError("Bot entered ERROR status")
+              finally:
+                  task.cancel()
+                  try:
+                      await task
+                  except asyncio.CancelledError:
+                      pass
+
+          try:
+              asyncio.run(run())
+          except Exception as exc:
+              failure = f"{type(exc).__name__}: {exc}"
+              print("PAPER SESSION FAILED:", failure, flush=True)
+              traceback.print_exc()
+          finally:
+              capture()
+          if failure:
+              raise SystemExit(1)
+          PY
+          python /tmp/paper_session.py
+      - name: Upload session result and live logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: paper-live-results-20261026
+          path: paper_session_results/
+          retention-days: 14
+          if-no-files-found: warn
