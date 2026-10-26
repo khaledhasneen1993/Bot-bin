@@ -1,0 +1,93 @@
+name: Validate 20-symbol 10x compounding sizing
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/validate-20pairs10x.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  offline-unit-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      PYTHONUNBUFFERED: '1'
+      INITIAL_CAPITAL: '100'
+      BINANCE_API_KEY: ''
+      BINANCE_API_SECRET: ''
+      TELEGRAM_BOT_TOKEN: ''
+      TELEGRAM_CHAT_ID: ''
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install unchanged dependency list
+        run: python -m pip install -r requirements.txt
+      - name: Compile all original and updated Python modules
+        run: python -m compileall -q main.py config.py dashboard.py modules/ backtests/
+      - name: Test 20 symbols, compounding margin, 10x enforcement, and quantity rounding without network or orders
+        id: test
+        shell: bash
+        run: |
+          mkdir -p backtests/results/config-20pairs10x
+          python - <<'PY'
+          import json
+          from datetime import datetime, timezone
+          from pathlib import Path
+          report = Path("backtests/results/config-20pairs10x/validation.json")
+          results = {"status":"failed","run_utc":datetime.now(timezone.utc).isoformat(),"tests":[]}
+          try:
+              import config
+              from modules.position_sizer import calculate_position_size
+              from modules.trade_manager import enforce_leverage_and_margin, round_qty, symbol_rules
+              def check(name,condition,details=None):
+                  results["tests"].append({"name":name,"passed":bool(condition),"details":details})
+                  if not condition: raise AssertionError(f"FAILED {name}: {details}")
+              check("20_unique_usdt_m_pairs",len(config.ACTIVE_PAIRS)==20 and len(set(config.ACTIVE_PAIRS))==20 and all(x.endswith('USDT') for x in config.ACTIVE_PAIRS),config.ACTIVE_PAIRS)
+              check("requested_10x",config.LEVERAGE==10,config.LEVERAGE)
+              check("requested_10pct_margin",config.POSITION_MARGIN_FRACTION==0.10,config.POSITION_MARGIN_FRACTION)
+              check("paper_capital_100",config.STARTING_BALANCE==100,config.STARTING_BALANCE)
+              for balance in [100.0,120.0,80.0,150.0]:
+                  notional=calculate_position_size(balance,100,85000)
+                  check(f"equity_compounding_{balance}",abs(notional-balance)<1e-9 and abs(notional/config.LEVERAGE-balance*0.1)<1e-9,{"equity":balance,"notional":notional,"margin":notional/config.LEVERAGE})
+              class FakeClient:
+                  def __init__(self):self.leverage=None;self.margin=None
+                  def futures_change_leverage(self,symbol,leverage):self.leverage=(symbol,leverage)
+                  def futures_change_margin_type(self,symbol,marginType):self.margin=(symbol,marginType)
+              fake=FakeClient()
+              enforce_leverage_and_margin(fake,"BTCUSDT")
+              check("api_leverage_enforced_10x",fake.leverage==("BTCUSDT",10),fake.leverage)
+              check("isolated_margin_enforced",fake.margin==("BTCUSDT","ISOLATED"),fake.margin)
+              symbol_rules["BTCUSDT"]={"step_size":0.001,"tick_size":0.1,"min_notional":50}
+              quantity=round_qty("BTCUSDT",100/80000)
+              check("qty_floors_within_margin_budget",quantity==0.001 and quantity*80000<=100,{"quantity":quantity,"notional":quantity*80000})
+              check("below_min_notional_skip",calculate_position_size(3,100,85000)==0)
+              results["status"]="passed"
+          except Exception as e:
+              results["error"]=str(e)
+              raise
+          finally:
+              report.write_text(json.dumps(results,indent=2,ensure_ascii=False))
+              print("VERIFICATION:",report.read_text(),flush=True)
+          PY
+      - name: Commit validation result
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p backtests/results/config-20pairs10x
+          if [ ! -f backtests/results/config-20pairs10x/validation.json ]; then
+            printf '{"status":"failed","error":"Compilation or dependency installation failed; consult workflow logs"}\n' > backtests/results/config-20pairs10x/validation.json
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add backtests/results/config-20pairs10x/validation.json
+          git commit -m "Record 20-pair 10x margin sizing tests" || true
+          git push || true
+      - name: Upload validation report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: validation-20pairs-10x
+          path: backtests/results/config-20pairs10x/
+          retention-days: 14
