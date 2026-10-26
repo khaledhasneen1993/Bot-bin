@@ -1,9 +1,13 @@
 name: Live-market paper simulation (26 Oct until 21:00 Amman)
 on:
+  workflow_dispatch:
   push:
     branches: [main]
     paths:
       - '.github/workflows/paper-until-2100-20261026.yml'
+concurrency:
+  group: paper-live-20261026
+  cancel-in-progress: true
 permissions:
   contents: read
 jobs:
