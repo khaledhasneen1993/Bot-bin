@@ -1,0 +1,28 @@
+name: Historical archive availability preflight
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/historical-preflight-20261026.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  check-archives:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check Binance Vision historical data files without account API
+        run: |
+          set +e
+          for spec in \
+           "klines/BTCUSDT/1m/BTCUSDT-1m-2026-09-26.zip" \
+           "klines/BTCUSDT/1m/BTCUSDT-1m-2026-10-25.zip" \
+           "metrics/BTCUSDT/BTCUSDT-metrics-2026-09-26.zip" \
+           "metrics/BTCUSDT/BTCUSDT-metrics-2026-10-25.zip" \
+           "fundingRate/BTCUSDT/BTCUSDT-fundingRate-2026-10-25.zip"; do
+            url="https://data.binance.vision/data/futures/um/daily/$spec"
+            echo "Checking $url"
+            curl -L -sS --connect-timeout 10 --max-time 35 -o /tmp/check.zip -w 'HTTP=%{http_code} SIZE=%{size_download}\\n' "$url"
+            unzip -t /tmp/check.zip 2>&1 | tail -n 3
+            if unzip -t /tmp/check.zip >/dev/null 2>&1; then unzip -p /tmp/check.zip | head -c 350 || :; echo; fi
+          done
